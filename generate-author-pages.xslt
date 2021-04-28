@@ -30,16 +30,16 @@
 			<xsl:variable name="AuthorName">
 				<xsl:value-of select="."/>
 			</xsl:variable>
-			<xsl:variable name="LastName">
+			<xsl:variable name="Last_Name">
 				<xsl:value-of select="replace(tokenize(.,' ')[last()], '[^a-zA-Z0-9 -.]','=')"/>
 			</xsl:variable>
-			<xsl:variable name="firstName">
-				<xsl:value-of select="substring-before(replace(replace(., '[^a-zA-Z0-9 -.]', '='), ' ','_'),$LastName)"/>
+			<xsl:variable name="first_Name">
+				<xsl:value-of select="substring-before(replace(replace(., '[^a-zA-Z0-9 -.]', '='), ' ','_'),$Last_Name)"/>
 			</xsl:variable>
-			<xsl:variable name="firstLetter">
-				<xsl:value-of select="translate(substring($LastName, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
+			<xsl:variable name="first_Letter">
+				<xsl:value-of select="translate(substring($Last_Name, 1, 1), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')"/>
 			</xsl:variable>
-			<xsl:result-document method="html" href="a-tree/{$firstLetter}/{$LastName}.{$firstName}.html">
+			<xsl:result-document method="html" href="a-tree/{$first_Letter}/{$Last_Name}.{$first_Name}.html">
 				<html>
 					<head>
 						<title>
@@ -62,8 +62,8 @@
 						<table border="1">
 							<xsl:call-template name="CoAuthorSelection">
 								<xsl:with-param name="P_AuthorName" select="$AuthorName"/>
-								<xsl:with-param name="P_LastName" select="$LastName"/>
-								<xsl:with-param name="P_firstName" select="$firstName"/>
+								<xsl:with-param name="P_Last_Name" select="$Last_Name"/>
+								<xsl:with-param name="P_first_Name" select="$first_Name"/>
 							</xsl:call-template>
 						</table>
 					</body>
@@ -158,18 +158,18 @@
 							<xsl:for-each select="CoAuthors">
 
 								<xsl:for-each select="Author">
-									<xsl:variable name="LastName">
+									<xsl:variable name="Last_Name">
 										<xsl:value-of select="replace(tokenize(.,' ')[last()], '[^a-zA-Z0-9 -.]','=')"/>
 									</xsl:variable>
-									<xsl:variable name="firstName">
-										<xsl:value-of select="substring-before(replace(replace(., '[^a-zA-Z0-9 -.]', '='), ' ','_'),$LastName)"/>
+									<xsl:variable name="first_Name">
+										<xsl:value-of select="substring-before(replace(replace(., '[^a-zA-Z0-9 -.]', '='), ' ','_'),$Last_Name)"/>
 									</xsl:variable>
-									<xsl:variable name="firstLetter">
-										<xsl:value-of select="translate(substring($LastName, 1, 1), 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
+									<xsl:variable name="first_Letter">
+										<xsl:value-of select="translate(substring($Last_Name, 1, 1), 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 									</xsl:variable>
 									<xsl:choose>
 										<xsl:when test="$P_AuthorName != .">
-											<a href="../{$firstLetter}/{$LastName}.{$firstName}.html">
+											<a href="../{$first_Letter}/{$Last_Name}.{$first_Name}.html">
 												<xsl:value-of select="."/>
 											</a>,
 </xsl:when>
@@ -209,8 +209,8 @@
 
 	<xsl:template name="CoAuthorSelection">
 		<xsl:param name="P_AuthorName"/>
-		<xsl:param name="P_LastName"/>
-		<xsl:param name="P_firstName"/>
+		<xsl:param name="P_Last_Name"/>
+		<xsl:param name="P_first_Name"/>
 		<xsl:variable name="Co_authors">
 			<xsl:for-each select="$dblps/dblp">
 				<xsl:for-each select="*[author=$P_AuthorName] | *[editor=$P_AuthorName] ">
@@ -233,16 +233,16 @@
 			<xsl:variable name="IsCo_author" select="replace(., '\.$', '')"/>
 			<tr>
 				<td align="right">
-					<xsl:variable name="LastName">
+					<xsl:variable name="Last_Name">
 						<xsl:value-of select="replace(tokenize(.,' ')[last()], '[^a-zA-Z0-9 -.]','=')"/>
 					</xsl:variable>
-					<xsl:variable name="firstNameCo">
-						<xsl:value-of select="substring-before(replace(replace(., '[^a-zA-Z0-9 -.]', '='), ' ','_'),$LastName)"/>
+					<xsl:variable name="first_NameCo">
+						<xsl:value-of select="substring-before(replace(replace(., '[^a-zA-Z0-9 -.]', '='), ' ','_'),$Last_Name)"/>
 					</xsl:variable>
-					<xsl:variable name="firstLetterCo">
-						<xsl:value-of select="translate(substring($LastName, 1, 1), 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
+					<xsl:variable name="first_LetterCo">
+						<xsl:value-of select="translate(substring($Last_Name, 1, 1), 'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')"/>
 					</xsl:variable>
-					<a href="../{$firstLetterCo}/{$LastName}.{$firstNameCo}.html">
+					<a href="../{$first_LetterCo}/{$Last_Name}.{$first_NameCo}.html">
 						<xsl:value-of select="$IsCo_author"/>
 					</a>
 				</td>
@@ -254,7 +254,7 @@
 							<xsl:for-each select="Co_author">
 								<xsl:variable name="PageArticle" select="$TotalCo_author - $Indexs + 1"/>
 								<xsl:if test="$IsCo_author = .">
-					[<a href="{$P_LastName}.{$P_firstName}.html#p{$PageArticle}">
+					[<a href="{$P_Last_Name}.{$P_first_Name}.html#p{$PageArticle}">
 									<xsl:value-of select="$PageArticle"/>
 					 </a>]<xsl:text> </xsl:text>
 				 		</xsl:if>
@@ -267,3 +267,4 @@
 		</xsl:for-each-group>
 	</xsl:template>
 </xsl:stylesheet>
+
